@@ -3,7 +3,9 @@ package vn.hoidanit.jobhunter.util.error;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,6 +44,16 @@ public class GlobalException {
             errors.add(x.toString());
         }
         res.setMessage(errors.size() > 1 ? errors : errors.get(0));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<RestResponse<Object>> handleGenericException(Exception ex) {
+        RestResponse<Object> res = new RestResponse<>();
+        res.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        res.setError(ex.getMessage());
+        res.setMessage("Tên công ty không được bỏ trống");
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
 
