@@ -3,9 +3,14 @@ package vn.hoidanit.jobhunter.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.hoidanit.jobhunter.domain.User;
+import vn.hoidanit.jobhunter.domain.dto.Meta;
+import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 
 @Service
@@ -20,8 +25,42 @@ public class UserService {
         this.userRepository.save(user);
     }
 
-    public List<User> fetchAllUser() {
-        return this.userRepository.findAll();
+    public boolean existsByEmail(String email) {
+        if (this.userRepository.existsByEmail(email)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public ResultPaginationDTO fetchAllUser(Pageable pageable) {
+        Page<User> page = this.userRepository.findAll(pageable);
+        ResultPaginationDTO rs = new ResultPaginationDTO();
+        Meta mt = new Meta();
+        mt.setPage(page.getNumber() + 1); // dang o trang bao nhieu
+        mt.setPageSize(page.getSize()); // bao nhieu phan tu
+        mt.setPages(page.getTotalPages()); // tong so trang
+        mt.setTotal(page.getTotalElements()); // tong phan tu
+        rs.setMeta(mt);
+        rs.setResult(page.getContent());
+        return rs;
+
+    }
+
+    public ResultPaginationDTO fetchAllUser2(Specification<User> pageable, Pageable pageable2) {
+        Page<User> page = this.userRepository.findAll(pageable, pageable2);
+        ResultPaginationDTO rs = new ResultPaginationDTO();
+        Meta mt = new Meta();
+        mt.setPage(pageable2.getPageNumber() + 1);
+        mt.setPageSize(pageable2.getPageSize());
+
+        mt.setPages(page.getTotalPages());
+        mt.setTotal(page.getTotalElements());
+
+        rs.setMeta(mt);
+        rs.setResult(page.getContent());
+        return rs;
+
     }
 
     public User saveUser(User user) {

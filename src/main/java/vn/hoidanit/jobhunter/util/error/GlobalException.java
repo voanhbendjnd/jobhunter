@@ -47,14 +47,4 @@ public class GlobalException {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<RestResponse<Object>> handleGenericException(Exception ex) {
-        RestResponse<Object> res = new RestResponse<>();
-        res.setStatusCode(HttpStatus.BAD_REQUEST.value());
-        res.setError(ex.getMessage());
-        res.setMessage("Tên công ty không được bỏ trống");
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-    }
-
 }
