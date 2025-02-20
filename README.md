@@ -7,7 +7,7 @@
   </a>
 </h1>
 
-<img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=30&duration=4000&color=B6477B&center=true&vCenter=true&width=600&lines=Welcome+to+my+project;This+is+a+blinking+text+effect;Made+with+love+%E2%9D%A4%EF%B8%8F;Hope+you+enjoy+it!" alt="Typing SVG" />
+
 
 </div>
 
