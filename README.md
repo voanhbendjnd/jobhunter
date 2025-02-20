@@ -10,7 +10,7 @@
   <div class="blink">⭐ Ben Ben (djnd) ⭐</div>
 </div>
 
-![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=24&pause=1000&color=F70000&background=FFFFFF00&width=600&height=60&lines=I'm+glad+you+stopped+by!;Have+a+great+day+coding!)
+
 
 
 
