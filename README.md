@@ -8,28 +8,33 @@
 </h1>
 
 <img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=30&duration=4000&color=B6477B&center=true&vCenter=true&width=600&lines=Welcome+to+my+project;This+is+a+blinking+text+effect;Made+with+love+%E2%9D%A4%EF%B8%8F;Hope+you+enjoy+it!" alt="Typing SVG" />
+
 </div>
 
 <!-- CSS cho hiệu ứng nhấp nháy -->
-<style>
-  .blink {
-    animation: blink-animation 1s steps(5, start) infinite;
-    -webkit-animation: blink-animation 1s steps(5, start) infinite;
-  }
-  @keyframes blink-animation {
-    to {
-      visibility: hidden;
+<div style="text-align: center;">
+  <style>
+    .blink {
+      animation: blink-animation 1s steps(5, start) infinite;
+      -webkit-animation: blink-animation 1s steps(5, start) infinite;
+      display: inline-block;
+      padding: 10px;
+      font-size: 20px;
     }
-  }
-  @-webkit-keyframes blink-animation {
-    to {
-      visibility: hidden;
+    @keyframes blink-animation {
+      50% {
+        opacity: 0;
+      }
     }
-  }
-</style>
+    @-webkit-keyframes blink-animation {
+      50% {
+        opacity: 0;
+      }
+    }
+  </style>
 
-<!-- Chữ nhấp nháy sử dụng CSS -->
-<span class="blink">⭐ Ben Ben (djnd) ⭐</span>
+  <div class="blink">⭐ Ben Ben (djnd) ⭐</div>
+</div>
 
-<!-- Chữ nhấp nháy sử dụng GIF -->
-![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=24&pause=1000&color=F70000&background=FFFFFF00&width=435&lines=I'm+glad+you+stopped+by%2C+have+a+great+day+coding!)
+<!-- Chữ nhấp nháy sử dụng SVG với width lớn hơn -->
+![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=24&pause=1000&color=F70000&background=FFFFFF00&width=600&lines=I'm+glad+you+stopped+by%2C+have+a+great+day+coding!)
