@@ -13,25 +13,7 @@
 
 <!-- CSS cho hiệu ứng nhấp nháy -->
 <div style="text-align: center;">
-  <style>
-    .blink {
-      animation: blink-animation 1s steps(5, start) infinite;
-      -webkit-animation: blink-animation 1s steps(5, start) infinite;
-      display: inline-block;
-      padding: 10px;
-      font-size: 20px;
-    }
-    @keyframes blink-animation {
-      50% {
-        opacity: 0;
-      }
-    }
-    @-webkit-keyframes blink-animation {
-      50% {
-        opacity: 0;
-      }
-    }
-  </style>
+
 
   <div class="blink">⭐ Ben Ben (djnd) ⭐</div>
 </div>
