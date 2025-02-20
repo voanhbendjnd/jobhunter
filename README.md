@@ -1,16 +1,28 @@
-# Java Spring Starter template
-Template này được sử dụng cho series Java Spring Restful (dự án jobHunter) của tác giả Hỏi Dân IT (Eric)
+<div align="center">
 
-## Về tác giả
-Mọi thông tin về Tác giả Hỏi Dân IT, các bạn có thể tìm kiếm tại đây:
+# Project Title
 
-Website chính thức: https://hoidanit.vn/
+<img src="https://readme-typing-svg.herokuapp.com?font=Dancing+Script&size=30&duration=4000&color=B6477B&center=true&vCenter=true&width=600&lines=Welcome+to+my+project;This+is+a+blinking+text+effect;Made+with+love+%E2%9D%A4%EF%B8%8F;Hope+you+enjoy+it!" alt="Typing SVG" />
 
-Youtube “Hỏi Dân IT” : https://www.youtube.com/@hoidanit
+</div>
 
-Tiktok “Hỏi Dân IT” :  https://www.tiktok.com/@hoidanit
+<style>
+  .blink {
+    animation: blink-animation 1s steps(5, start) infinite;
+    -webkit-animation: blink-animation 1s steps(5, start) infinite;
+  }
+  @keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+  }
+  @-webkit-keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+  }
+</style>
 
-Fanpage “Hỏi Dân IT” : https://www.facebook.com/askITwithERIC/
+<span class="blink">⭐ Ben Ben (djnd) ⭐</span>
 
-Udemy Hỏi Dân IT: https://www.udemy.com/user/eric-7039/
-
+![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=24&pause=1000&color=F70000&background=FFFFFF00&width=435&lines=This+is+a+blinking+text+using+SVG)
