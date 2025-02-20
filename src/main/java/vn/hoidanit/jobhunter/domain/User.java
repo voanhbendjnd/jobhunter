@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
@@ -25,6 +26,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @NotBlank(message = "email khong duoc de trong") // @valid
     private String email;
     private String password;
     private int age;
@@ -47,12 +49,28 @@ public class User {
         this.createAt = Instant.now();
     }
 
+    // @PreUpdate
+    // public void handleBeforeUpdateAt() {
+    // this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+    // ? SecurityUtil.getCurrentUserLogin().get()
+    // : "";
+    // this.createAt = Instant.now();
+    // }
+
+    // @PrePersist
+    // public void handleBeforeCreateBy() {
+    // this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+    // ? SecurityUtil.getCurrentUserLogin().get()
+    // : "";
+    // this.updateAt = Instant.now();
+    // }
+
     @PreUpdate
-    public void handleBeforeUpdate() {
-        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+    public void handleBeforeUpdateBy() {
+        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
-        this.createAt = Instant.now();
+        this.updateAt = Instant.now();
     }
 
 }
