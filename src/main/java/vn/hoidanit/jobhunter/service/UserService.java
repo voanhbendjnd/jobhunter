@@ -179,4 +179,13 @@ public class UserService {
     public User fecthUserByUserName(String name) {
         return this.userRepository.findByEmail(name);
     }
+
+    // token
+    public void updateUserToken(String token, String email) {
+        User user = this.userRepository.findByEmail(email);
+        if (user != null) {
+            user.setRefreshToken(token);
+            this.userRepository.save(user);
+        }
+    }
 }

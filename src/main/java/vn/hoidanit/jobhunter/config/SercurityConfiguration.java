@@ -40,7 +40,7 @@ public class SercurityConfiguration {
     // public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS512;
     @Value("${hoidanit.jwt.base64-secret}")
     private String jwtKey;
-    // @Value("${hoidanit.jwt.token-validity-in-seconds}")
+    // @Value("${hoidanit.jwt.access-token-validity-in-seconds}")
     // private Long jwtExpriation;
 
     @Bean
@@ -57,7 +57,7 @@ public class SercurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         authz -> authz
-                                .requestMatchers("/", "/api/v1/login").permitAll()
+                                .requestMatchers("/", "/api/v1/auth/login").permitAll()
                                 .anyRequest().authenticated()
                 // .anyRequest().permitAll()
 
@@ -96,7 +96,7 @@ public class SercurityConfiguration {
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         grantedAuthoritiesConverter.setAuthorityPrefix("");
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("hoidanit");
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("user");
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
