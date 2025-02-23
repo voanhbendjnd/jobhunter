@@ -1,6 +1,5 @@
 package vn.hoidanit.jobhunter.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,11 +10,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.Meta;
 import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
-import vn.hoidanit.jobhunter.domain.dto.UpdateUserDTO;
-import vn.hoidanit.jobhunter.domain.dto.UserCreateDTO;
-import vn.hoidanit.jobhunter.domain.dto.UserDTO;
+import vn.hoidanit.jobhunter.domain.dto.ResUpdateUserDTO;
+import vn.hoidanit.jobhunter.domain.dto.ResUserCreateDTO;
 import vn.hoidanit.jobhunter.domain.dto.UserFetchToDTO;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 
@@ -42,7 +39,7 @@ public class UserService {
     public ResultPaginationDTO fetchAllUser(Pageable pageable) {
         Page<User> page = this.userRepository.findAll(pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
-        Meta mt = new Meta();
+        ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
         mt.setPage(page.getNumber() + 1); // dang o trang bao nhieu
         mt.setPageSize(page.getSize()); // bao nhieu phan tu
         mt.setPages(page.getTotalPages()); // tong so trang
@@ -56,7 +53,7 @@ public class UserService {
     public ResultPaginationDTO fetchAllUser2(Specification<User> pageable, Pageable pageable2) {
         Page<User> page = this.userRepository.findAll(pageable, pageable2);
         ResultPaginationDTO rs = new ResultPaginationDTO();
-        Meta mt = new Meta();
+        ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
         mt.setPage(pageable2.getPageNumber() + 1);
         mt.setPageSize(pageable2.getPageSize());
 
@@ -83,10 +80,10 @@ public class UserService {
         // return this.userRepository.findById(id);
     }
 
-    public UpdateUserDTO updateUserById(User user) {
+    public ResUpdateUserDTO updateUserById(User user) {
         Optional<User> userGe = this.userRepository.findById(user.getId());
         if (userGe.isPresent()) {
-            UpdateUserDTO dto = new UpdateUserDTO();
+            ResUpdateUserDTO dto = new ResUpdateUserDTO();
             dto.setAddress(user.getAddress());
             dto.setAge(user.getAge());
             dto.setGender(user.getGender());
@@ -102,13 +99,13 @@ public class UserService {
         }
     }
 
-    public UpdateUserDTO convertUpdate(User user) {
-        UpdateUserDTO dto = new UpdateUserDTO();
+    public ResUpdateUserDTO convertUpdate(User user) {
+        ResUpdateUserDTO dto = new ResUpdateUserDTO();
         dto.setId(user.getId());
         dto.setAddress(user.getAddress());
         dto.setAge(user.getAge());
         dto.setGender(user.getGender());
-        dto.setUpdateAt(user.getUpdateAt());
+        dto.setUpdateAt(user.getUpdatedAt());
         dto.setName(user.getName());
         return dto;
     }
@@ -126,8 +123,8 @@ public class UserService {
     }
 
     // create
-    public UserCreateDTO convertUserToDTO(User user) {
-        UserCreateDTO res = new UserCreateDTO();
+    public ResUserCreateDTO convertUserToDTO(User user) {
+        ResUserCreateDTO res = new ResUserCreateDTO();
         res.setId(user.getId());
         res.setEmail(user.getEmail());
         res.setName(user.getName());
@@ -147,7 +144,7 @@ public class UserService {
         dto.setAge(user.getAge());
         dto.setEmail(user.getEmail());
         dto.setCreateAt(user.getCreateAt());
-        dto.setUpdateAt(user.getUpdateAt());
+        dto.setUpdateAt(user.getUpdatedAt());
         dto.setGender(user.getGender());
         dto.setId(user.getId());
         return dto;
@@ -156,7 +153,7 @@ public class UserService {
     public ResultPaginationDTO fetchAllUserPlus(Pageable pageable, Specification spec) {
         Page<User> res = this.userRepository.findAll(spec, pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
-        Meta mt = new Meta();
+        ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
         mt.setPage(pageable.getPageNumber() + 1);
         mt.setPageSize(pageable.getPageSize());
 
@@ -165,7 +162,7 @@ public class UserService {
         rs.setMeta(mt);
         List<UserFetchToDTO> listUser = res.getContent().stream()
                 .map(it -> new UserFetchToDTO(it.getId(), it.getEmail(), it.getName(), it.getGender(), it.getAddress(),
-                        it.getAge(), it.getUpdateAt(), it.getCreateAt()))
+                        it.getAge(), it.getUpdatedAt(), it.getCreateAt()))
                 .collect(Collectors.toList());
         rs.setResult(listUser);
 
@@ -187,5 +184,9 @@ public class UserService {
             user.setRefreshToken(token);
             this.userRepository.save(user);
         }
+    }
+
+    public User getUserByRefreshTokenAndEmail(String token, String email) {
+        return this.userRepository.findByRefreshTokenAndEmail(token, email);
     }
 }

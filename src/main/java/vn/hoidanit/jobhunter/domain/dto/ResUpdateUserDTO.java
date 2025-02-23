@@ -13,7 +13,7 @@ import vn.hoidanit.jobhunter.util.constant.GenderEnum;
 
 @Getter
 @Setter
-public class UpdateUserDTO {
+public class ResUpdateUserDTO {
     private Long id;
     private String name;
     private GenderEnum gender;

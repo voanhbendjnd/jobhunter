@@ -38,7 +38,7 @@ public class User {
     private String refreshToken;
 
     private Instant createAt;
-    private Instant updateAt;
+    private Instant updatedAt;
     private String createBy;
     private String updateBy;
 
@@ -71,7 +71,7 @@ public class User {
         this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
-        this.updateAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
 }

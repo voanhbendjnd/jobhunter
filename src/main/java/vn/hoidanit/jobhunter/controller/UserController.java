@@ -30,9 +30,9 @@ import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.RestResponse;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
-import vn.hoidanit.jobhunter.domain.dto.UpdateUserDTO;
-import vn.hoidanit.jobhunter.domain.dto.UserCreateDTO;
-import vn.hoidanit.jobhunter.domain.dto.UserDTO;
+import vn.hoidanit.jobhunter.domain.dto.ResUpdateUserDTO;
+import vn.hoidanit.jobhunter.domain.dto.ResUserCreateDTO;
+import vn.hoidanit.jobhunter.domain.dto.ResUserDTO;
 import vn.hoidanit.jobhunter.domain.dto.UserFetchToDTO;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
@@ -51,7 +51,7 @@ public class UserController {
 
     @PostMapping("/users")
     @ApiMessage("Create a new user")
-    public ResponseEntity<UserCreateDTO> createNewUser(@Valid @RequestBody User user) throws IdInvalidException { // class
+    public ResponseEntity<ResUserCreateDTO> createNewUser(@Valid @RequestBody User user) throws IdInvalidException { // class
         String hashPassword = this.passwordEncoder.encode(user.getPassword());
         user.setPassword(hashPassword);
         if (this.userService.existsByEmail(user.getEmail())) {
@@ -88,21 +88,23 @@ public class UserController {
         return ResponseEntity.ok(null);
     }
 
+    // @GetMapping("/users")
+    // public ResponseEntity<ResultPaginationDTO> fetchAllUser(
+
+    // @RequestParam("current") Optional<String> currentOptional,
+    // @RequestParam("pageSize") Optional<String> pageSizeOptional) {
+    // String currentPage = currentOptional.isPresent() ? currentOptional.get() :
+    // "";
+    // String pageSize = pageSizeOptional.isPresent() ? pageSizeOptional.get() : "";
+    // Integer current = Integer.parseInt(currentPage);
+    // Integer pageSizeNumber = Integer.parseInt(pageSize);
+    // Pageable pageable = PageRequest.of(current - 1, pageSizeNumber);
+    // // return this.userService.fetchAllUser();
+    // return
+    // ResponseEntity.status(HttpStatus.OK).body(this.userService.fetchAllUser(pageable));
+    // }
+
     @GetMapping("/users")
-    public ResponseEntity<ResultPaginationDTO> fetchAllUser(
-
-            @RequestParam("current") Optional<String> currentOptional,
-            @RequestParam("pageSize") Optional<String> pageSizeOptional) {
-        String currentPage = currentOptional.isPresent() ? currentOptional.get() : "";
-        String pageSize = pageSizeOptional.isPresent() ? pageSizeOptional.get() : "";
-        Integer current = Integer.parseInt(currentPage);
-        Integer pageSizeNumber = Integer.parseInt(pageSize);
-        Pageable pageable = PageRequest.of(current - 1, pageSizeNumber);
-        // return this.userService.fetchAllUser();
-        return ResponseEntity.status(HttpStatus.OK).body(this.userService.fetchAllUser(pageable));
-    }
-
-    @GetMapping("/users2")
     @ApiMessage("fetch all users")
     public ResponseEntity<ResultPaginationDTO> fetchAllUserPagin(
             @Filter Specification<User> spec,
@@ -124,7 +126,7 @@ public class UserController {
 
     @PutMapping("/users")
     @ApiMessage("Update a user")
-    public ResponseEntity<UpdateUserDTO> updateUserById(@RequestBody User user) throws IdInvalidException {
+    public ResponseEntity<ResUpdateUserDTO> updateUserById(@RequestBody User user) throws IdInvalidException {
         // return this.userService.updateUserById(user);
         if (this.userService.checkId(user.getId())) {
             return ResponseEntity.ok(this.userService.convertUpdate(this.userService.handleUpdateUser(user)));
