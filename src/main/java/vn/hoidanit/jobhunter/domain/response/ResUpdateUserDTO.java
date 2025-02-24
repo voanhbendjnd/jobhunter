@@ -1,12 +1,7 @@
-package vn.hoidanit.jobhunter.domain.dto;
+package vn.hoidanit.jobhunter.domain.response;
 
 import java.time.Instant;
 
-import org.hibernate.annotations.SecondaryRow;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 import lombok.Setter;
 import vn.hoidanit.jobhunter.util.constant.GenderEnum;
@@ -21,6 +16,14 @@ public class ResUpdateUserDTO {
     private int age;
     // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant updateAt;
+    private CompanyDTO company;
+
+    @Getter
+    @Setter
+    public static class CompanyDTO {
+        private Long id;
+        private String name;
+    }
 
     // @PreUpdate
     // public void handleBeforeUpdate() {

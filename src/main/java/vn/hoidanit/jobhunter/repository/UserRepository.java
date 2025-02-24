@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.User;
 
 @Repository
@@ -18,5 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     boolean existsById(Long id);
 
     User findByRefreshTokenAndEmail(String token, String email);
+
+    List<User> findByCompany(Company company);
 
 }
