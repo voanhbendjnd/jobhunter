@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import vn.hoidanit.jobhunter.domain.Company;
-import vn.hoidanit.jobhunter.domain.User;
+import vn.hoidanit.jobhunter.domain.Entity.Company;
+import vn.hoidanit.jobhunter.domain.Entity.User;
 import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResUserCreateDTO;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
@@ -167,7 +167,7 @@ public class UserService {
         res.setEmail(user.getEmail());
         res.setName(user.getName());
         res.setAge(user.getAge());
-        res.setCreateAt(user.getCreateAt());
+        res.setCreateAt(user.getCreatedAt());
         res.setGender(user.getGender());
         res.setAddress(user.getAddress());
         if (user.getCompany() != null) {
@@ -195,7 +195,7 @@ public class UserService {
         dto.setName(user.getName());
         dto.setAge(user.getAge());
         dto.setEmail(user.getEmail());
-        dto.setCreateAt(user.getCreateAt());
+        dto.setCreateAt(user.getCreatedAt());
         dto.setUpdateAt(user.getUpdatedAt());
         dto.setGender(user.getGender());
         dto.setId(user.getId());
@@ -227,7 +227,7 @@ public class UserService {
                     dto.setAddress(it.getAddress());
                     dto.setAge(it.getAge());
                     dto.setUpdateAt(it.getUpdatedAt());
-                    dto.setCreateAt(it.getCreateAt());
+                    dto.setCreateAt(it.getCreatedAt());
 
                     if (it.getCompany() != null) {
                         UserFetchToDTO.CompanyDTO dtoCompany = new UserFetchToDTO.CompanyDTO(it.getCompany().getId(),

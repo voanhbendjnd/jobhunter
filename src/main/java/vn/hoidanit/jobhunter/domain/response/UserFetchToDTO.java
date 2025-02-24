@@ -26,6 +26,7 @@ public class UserFetchToDTO {
     @Getter
     @Setter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class CompanyDTO {
         private Long id;
         private String name;

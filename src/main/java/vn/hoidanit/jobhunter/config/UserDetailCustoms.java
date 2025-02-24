@@ -22,7 +22,7 @@ public class UserDetailCustoms implements UserDetailsService {
     // principal
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        vn.hoidanit.jobhunter.domain.User user = this.userService.fecthUserByUserName(username);
+        vn.hoidanit.jobhunter.domain.Entity.User user = this.userService.fecthUserByUserName(username);
         if (user == null)
             throw new UsernameNotFoundException("Username/password not found");
         return new User(

@@ -1,4 +1,4 @@
-package vn.hoidanit.jobhunter.domain;
+package vn.hoidanit.jobhunter.domain.Entity;
 
 import java.time.Instant;
 
@@ -39,10 +39,10 @@ public class User {
     @Column(columnDefinition = "MEDIUMTEXT")
     private String refreshToken;
 
-    private Instant createAt;
+    private Instant createdAt;
     private Instant updatedAt;
-    private String createBy;
-    private String updateBy;
+    private String createdBy;
+    private String updatedBy;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
@@ -50,31 +50,15 @@ public class User {
 
     @PrePersist
     public void handleBeforeCreateAt() {
-        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
-        this.createAt = Instant.now();
+        this.createdAt = Instant.now();
     }
-
-    // @PreUpdate
-    // public void handleBeforeUpdateAt() {
-    // this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-    // ? SecurityUtil.getCurrentUserLogin().get()
-    // : "";
-    // this.createAt = Instant.now();
-    // }
-
-    // @PrePersist
-    // public void handleBeforeCreateBy() {
-    // this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-    // ? SecurityUtil.getCurrentUserLogin().get()
-    // : "";
-    // this.updateAt = Instant.now();
-    // }
 
     @PreUpdate
     public void handleBeforeUpdateBy() {
-        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
         this.updatedAt = Instant.now();

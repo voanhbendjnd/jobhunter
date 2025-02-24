@@ -20,7 +20,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import io.micrometer.core.instrument.Meter.Id;
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.config.SercurityConfiguration;
-import vn.hoidanit.jobhunter.domain.User;
+import vn.hoidanit.jobhunter.domain.Entity.User;
 import vn.hoidanit.jobhunter.domain.request.RequestLoginDTO;
 import vn.hoidanit.jobhunter.domain.response.ResLoginDTO;
 import vn.hoidanit.jobhunter.service.UserService;

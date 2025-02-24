@@ -27,7 +27,7 @@ import com.turkraft.springfilter.boot.Filter;
 
 import io.micrometer.core.instrument.Meter.Id;
 import jakarta.validation.Valid;
-import vn.hoidanit.jobhunter.domain.User;
+import vn.hoidanit.jobhunter.domain.Entity.User;
 import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResUserCreateDTO;
 import vn.hoidanit.jobhunter.domain.response.ResUserDTO;
