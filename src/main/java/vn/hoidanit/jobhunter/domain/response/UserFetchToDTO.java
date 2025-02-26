@@ -19,8 +19,8 @@ public class UserFetchToDTO {
     private GenderEnum gender;
     private String address;
     private int age;
-    private Instant updateAt;
-    private Instant createAt;
+    private Instant updatedAt;
+    private Instant createdAt;
     private CompanyDTO company;
 
     @Getter

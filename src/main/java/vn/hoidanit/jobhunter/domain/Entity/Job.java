@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,6 +22,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
@@ -35,6 +37,7 @@ public class Job {
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Tên không được để trống!!!")
     private String name;
     private String location;
     private double salary;
@@ -44,7 +47,7 @@ public class Job {
     private String description;
     private Instant startDate;
     private Instant endDate;
-    private boolean isActive;
+    private boolean active;
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;
@@ -56,7 +59,7 @@ public class Job {
     private Company company;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonIgnoreProperties(value = { "jobs" }) // list job của skill bị bỏ qua
     @JoinTable(name = "job_skill", joinColumns = @JoinColumn(name = "job_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills;
 

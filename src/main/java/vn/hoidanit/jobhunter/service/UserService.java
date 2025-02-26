@@ -195,8 +195,8 @@ public class UserService {
         dto.setName(user.getName());
         dto.setAge(user.getAge());
         dto.setEmail(user.getEmail());
-        dto.setCreateAt(user.getCreatedAt());
-        dto.setUpdateAt(user.getUpdatedAt());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setUpdatedAt(user.getUpdatedAt());
         dto.setGender(user.getGender());
         dto.setId(user.getId());
         UserFetchToDTO.CompanyDTO dtoCompany = new UserFetchToDTO.CompanyDTO();
@@ -226,8 +226,8 @@ public class UserService {
                     dto.setGender(it.getGender());
                     dto.setAddress(it.getAddress());
                     dto.setAge(it.getAge());
-                    dto.setUpdateAt(it.getUpdatedAt());
-                    dto.setCreateAt(it.getCreatedAt());
+                    dto.setUpdatedAt(it.getUpdatedAt());
+                    dto.setCreatedAt(it.getCreatedAt());
 
                     if (it.getCompany() != null) {
                         UserFetchToDTO.CompanyDTO dtoCompany = new UserFetchToDTO.CompanyDTO(it.getCompany().getId(),
