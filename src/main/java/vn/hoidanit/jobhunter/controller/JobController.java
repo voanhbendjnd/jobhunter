@@ -53,11 +53,11 @@ public class JobController {
 
     @GetMapping("/jobs/{id}")
     @ApiMessage("Fetch Job by Id")
-    public ResponseEntity<ResFetchJobDTO> fetchJob(@PathVariable("id") Long id) throws IdInvalidException {
+    public ResponseEntity<Job> fetchJob(@PathVariable("id") Long id) throws IdInvalidException {
         if (!this.jobService.existsById(id)) {
             throw new IdInvalidException("Id khong ton tai!!!!");
         }
-        return ResponseEntity.ok(this.jobService.fetch(id));
+        return ResponseEntity.ok(this.jobService.fetchById(id));
     }
 
     @GetMapping("/jobs")
