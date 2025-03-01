@@ -53,4 +53,16 @@ public class PermissionService {
 
     }
 
+    public boolean existsById(Long id) {
+        return this.permissionRepository.existsById(id) ? true : false;
+    }
+
+    public void deletePermission(Long id) {
+        Optional<Permission> permissionOptional = this.permissionRepository.findById(id);
+        Permission permission = permissionOptional.get();
+        permission.getRoles()
+                .forEach(it -> it.getPermissions().remove(permission));
+        this.permissionRepository.delete(permission);
+    }
+
 }
