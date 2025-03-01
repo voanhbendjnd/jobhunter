@@ -10,12 +10,14 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.jdbc.core.ResultSetSupportingSqlParameter;
 import org.springframework.stereotype.Service;
 
+import vn.hoidanit.jobhunter.domain.Entity.Company;
 import vn.hoidanit.jobhunter.domain.Entity.Job;
 import vn.hoidanit.jobhunter.domain.Entity.Skill;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.domain.response.job.ResCreateJobDTO;
 import vn.hoidanit.jobhunter.domain.response.job.ResFetchJobDTO;
 import vn.hoidanit.jobhunter.domain.response.job.ResUpdateJobDTO;
+import vn.hoidanit.jobhunter.repository.CompanyRepository;
 import vn.hoidanit.jobhunter.repository.JobRepository;
 import vn.hoidanit.jobhunter.repository.SkillRepository;
 
@@ -23,10 +25,13 @@ import vn.hoidanit.jobhunter.repository.SkillRepository;
 public class JobService {
     private final JobRepository jobRepository;
     private final SkillRepository skillRepository;
+    private final CompanyRepository companyRepository;
 
-    public JobService(JobRepository jobRepository, SkillRepository skillRepository) {
+    public JobService(JobRepository jobRepository, SkillRepository skillRepository,
+            CompanyRepository companyRepository) {
         this.jobRepository = jobRepository;
         this.skillRepository = skillRepository;
+        this.companyRepository = companyRepository;
     }
 
     public Job createNewCompany(Job job) {
@@ -77,6 +82,13 @@ public class JobService {
             List<Skill> dbSkills = this.skillRepository.findByIdIn(reqSkills);
             job.setSkills(dbSkills);
         }
+
+        if (job.getCompany() != null) {
+            Optional<Company> companyOptional = this.companyRepository.findById(job.getCompany().getId());
+            if (companyOptional.isPresent()) {
+                job.setCompany(companyOptional.get());
+            }
+        }
         Job currentJob = this.jobRepository.save(job);
         ResCreateJobDTO dto = new ResCreateJobDTO();
         dto.setId(currentJob.getId());
@@ -115,6 +127,13 @@ public class JobService {
             job.setSkills(dbSkills);
         }
         Job resJob = this.jobRepository.findById(job.getId()).get();
+        if (job.getCompany() != null) {
+            Optional<Company> companyOptional = this.companyRepository.findById(job.getCompany().getId());
+            if (companyOptional.isPresent()) {
+                resJob.setCompany(companyOptional.get());
+            }
+        }
+
         resJob.setName(job.getName());
         resJob.setSalary(job.getSalary());
         resJob.setLocation(job.getLocation());

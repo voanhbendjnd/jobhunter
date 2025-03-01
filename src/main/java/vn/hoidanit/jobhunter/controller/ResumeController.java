@@ -2,8 +2,8 @@ package vn.hoidanit.jobhunter.controller;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,13 +12,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.annotation.ApplicationScope;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.turkraft.springfilter.boot.Filter;
 
-import io.micrometer.core.ipc.http.HttpSender.Response;
-import jakarta.validation.ReportAsSingleViolation;
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.Entity.Resume;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
@@ -46,7 +42,7 @@ public class ResumeController {
                 || !this.resumeService.existsByIdJob(resume.getJob().getId())) {
             throw new IdInvalidException("User hoặc Job chưa tồn tại!!!");
         }
-        return ResponseEntity.ok(this.resumeService.resCreateResume(resume));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.resumeService.resCreateResume(resume));
     }
 
     @PutMapping("/resumes")
@@ -83,4 +79,5 @@ public class ResumeController {
     public ResponseEntity<ResultPaginationDTO> fetchAll(@Filter Specification<Resume> spec, Pageable pageable) {
         return ResponseEntity.ok(this.resumeService.resultPaginationDTO(pageable, spec));
     }
+
 }

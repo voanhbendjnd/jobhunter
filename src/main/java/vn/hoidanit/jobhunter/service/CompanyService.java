@@ -28,6 +28,10 @@ public class CompanyService {
         return this.companyRepository.save(company);
     }
 
+    public Company findById(Long id) {
+        return this.companyRepository.findById(id).get();
+    }
+
     public ResultPaginationDTO fetchAllCompany(Pageable pageable, Specification<Company> spec) {
         Page<Company> companyReturn = this.companyRepository.findAll(spec, pageable);
         // return this.companyRepository.findAll();

@@ -99,6 +99,9 @@ public class ResumeService {
         dto.setUpdatedAt(resumeOptional.get().getUpdatedAt());
         dto.setCreatedBy(resumeOptional.get().getCreatedBy());
         dto.setUpdatedBy(resumeOptional.get().getUpdatedBy());
+        if (resumeOptional.get().getJob() != null) {
+            dto.setCompanyName(resumeOptional.get().getJob().getCompany().getName());
+        }
         ResFetchResumeDTO.UserDTO user = new ResFetchResumeDTO.UserDTO();
         user.setId(resumeOptional.get().getUser().getId());
         user.setName(resumeOptional.get().getUser().getName());
@@ -142,6 +145,7 @@ public class ResumeService {
                     return fetchDto;
                 })
                 .collect(Collectors.toList());
+
         rp.setResult(dto);
 
         return rp;
