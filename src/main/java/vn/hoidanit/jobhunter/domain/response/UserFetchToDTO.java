@@ -22,12 +22,22 @@ public class UserFetchToDTO {
     private Instant updatedAt;
     private Instant createdAt;
     private CompanyDTO company;
+    private RoleDTO role;
 
     @Getter
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CompanyDTO {
+        private Long id;
+        private String name;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RoleDTO {
         private Long id;
         private String name;
     }

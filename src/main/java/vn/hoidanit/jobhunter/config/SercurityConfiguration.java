@@ -4,8 +4,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,6 +28,7 @@ import com.nimbusds.jose.util.Base64;
 
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 
+// request -> spring security -> interceptor -> controller -> service
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
 public class SercurityConfiguration {
@@ -46,7 +49,7 @@ public class SercurityConfiguration {
             CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         String[] whiteList = {
                 "/", "/api/v1/auth/login", "/api/v1/auth/refresh", "/storage/**", "/api/v1/companies/**",
-                "/api/v1/jobs/**"
+                "/api/v1/jobs/**", "/api/v1/auth/register"
         };
         http
 
@@ -56,6 +59,10 @@ public class SercurityConfiguration {
                         authz -> authz
                                 .requestMatchers(whiteList)
                                 .permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/companies").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/jobs").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/skills").permitAll()
+
                                 .anyRequest().authenticated()
                 // .anyRequest().permitAll()
 

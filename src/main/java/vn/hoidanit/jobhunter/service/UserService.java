@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import vn.hoidanit.jobhunter.domain.Entity.Role;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,18 +18,22 @@ import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResUserCreateDTO;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.domain.response.UserFetchToDTO;
-import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDTO.CompanyDTO;
+import vn.hoidanit.jobhunter.domain.response.job.ResCreateJobDTO;
 import vn.hoidanit.jobhunter.repository.CompanyRepository;
+import vn.hoidanit.jobhunter.repository.RoleRepository;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final CompanyRepository companyRepository;
 
-    public UserService(UserRepository userRepository, CompanyRepository companyRepository) {
+    public UserService(UserRepository userRepository, CompanyRepository companyRepository,
+            RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.companyRepository = companyRepository;
+        this.roleRepository = roleRepository;
     }
 
     public void saveAll(User user) {
@@ -76,6 +82,10 @@ public class UserService {
         if (user.getCompany() != null) {
             Optional<Company> companyOptional = this.companyRepository.findById(user.getCompany().getId());
             user.setCompany(companyOptional.isPresent() ? companyOptional.get() : null);
+        }
+        if (user.getRole() != null) {
+            Optional<Role> roleOptional = this.roleRepository.findById(user.getRole().getId());
+            user.setRole(roleOptional.isPresent() ? roleOptional.get() : null);
         }
         return this.userRepository.save(user);
     }
@@ -148,8 +158,11 @@ public class UserService {
             crUser.setName(user.getName());
             if (user.getCompany() == null) {
                 Optional<Company> companyOptional = this.companyRepository.findById(user.getCompany().getId());
-                user.setCompany(companyOptional.isPresent() ? companyOptional.get() : null);
-                crUser.setCompany(user.getCompany());
+                crUser.setCompany(companyOptional.isPresent() ? companyOptional.get() : null);
+            }
+            if (user.getRole() != null) {
+                Optional<Role> role = this.roleRepository.findById(user.getRole().getId());
+                crUser.setRole(role.isPresent() ? role.get() : null);
             }
 
             // crUser.setCompany(user.getCompany());
@@ -162,8 +175,7 @@ public class UserService {
     public ResUserCreateDTO convertUserToDTO(User user) {
         ResUserCreateDTO res = new ResUserCreateDTO();
         ResUserCreateDTO.CompanyDTO dtoCompany = new ResUserCreateDTO.CompanyDTO();
-
-        res.setId(user.getId());
+        ResUserCreateDTO.RoleDTO roleDTO = new ResUserCreateDTO.RoleDTO();
         res.setEmail(user.getEmail());
         res.setName(user.getName());
         res.setAge(user.getAge());
@@ -172,16 +184,14 @@ public class UserService {
         res.setAddress(user.getAddress());
         if (user.getCompany() != null) {
 
-            // Company company =
-            // this.companyRepository.findNameById(user.getCompany().getId());
-            // dtoCompany.setName(company.getName());
-            // dtoCompany.setId(user.getCompany().getId());
-            // dtoCompany.setName(user.getCompany().getName());
-            // res.setCompany(dtoCompany);
-
             dtoCompany.setId(user.getCompany().getId());
             dtoCompany.setName(user.getCompany().getName());
             res.setCompany(dtoCompany);
+        }
+        if (user.getRole() != null) {
+            roleDTO.setId(user.getRole().getId());
+            roleDTO.setName(user.getRole().getName());
+            res.setRole(roleDTO);
         }
 
         return res;
@@ -191,6 +201,19 @@ public class UserService {
 
     public UserFetchToDTO convertUserFetchToDTO(User user) {
         UserFetchToDTO dto = new UserFetchToDTO();
+        UserFetchToDTO.CompanyDTO companyDTO = new UserFetchToDTO.CompanyDTO();
+        UserFetchToDTO.RoleDTO roleDTO = new UserFetchToDTO.RoleDTO();
+        if (user.getCompany() != null) {
+            companyDTO.setId(user.getCompany().getId());
+            companyDTO.setName(user.getCompany().getName());
+            dto.setCompany(companyDTO);
+        }
+        if (user.getRole() != null) {
+            roleDTO.setId(user.getRole().getId());
+            roleDTO.setName(user.getRole().getName());
+            dto.setRole(roleDTO);
+        }
+
         dto.setAddress(user.getAddress());
         dto.setName(user.getName());
         dto.setAge(user.getAge());
@@ -199,11 +222,11 @@ public class UserService {
         dto.setUpdatedAt(user.getUpdatedAt());
         dto.setGender(user.getGender());
         dto.setId(user.getId());
-        UserFetchToDTO.CompanyDTO dtoCompany = new UserFetchToDTO.CompanyDTO();
-        dtoCompany.setId(user.getCompany().getId());
-        Company company = this.companyRepository.findNameById(dtoCompany.getId());
-        dtoCompany.setName(company.getName());
-        dto.setCompany(dtoCompany);
+        // UserFetchToDTO.CompanyDTO dtoCompany = new UserFetchToDTO.CompanyDTO();
+        // dtoCompany.setId(user.getCompany().getId());
+        // Company company = this.companyRepository.findNameById(dtoCompany.getId());
+        // dtoCompany.setName(company.getName());
+        // dto.setCompany(dtoCompany);
         return dto;
     }
 
@@ -217,34 +240,38 @@ public class UserService {
         mt.setPages(res.getTotalPages());
         mt.setTotal(res.getTotalElements());
         rs.setMeta(mt);
+        // List<UserFetchToDTO> listUser = res.getContent().stream()
+        // .map(it -> {
+        // UserFetchToDTO dto = new UserFetchToDTO();
+        // dto.setId(it.getId());
+        // dto.setEmail(it.getEmail());
+        // dto.setName(it.getName());
+        // dto.setGender(it.getGender());
+        // dto.setAddress(it.getAddress());
+        // dto.setAge(it.getAge());
+        // dto.setUpdatedAt(it.getUpdatedAt());
+        // dto.setCreatedAt(it.getCreatedAt());
+
+        // if (it.getCompany() != null) {
+        // UserFetchToDTO.CompanyDTO dtoCompany = new
+        // UserFetchToDTO.CompanyDTO(it.getCompany().getId(),
+        // it.getCompany().getName());
+
+        // // dtoCompany.setId(it.getCompany().getId());
+        // // dtoCompany.setName(it.getCompany().getName());
+        // dto.setCompany(dtoCompany);
+        // } else {
+        // dto.setCompany(null);
+        // }
+
+        // return dto;
+        // })
+        // .collect(Collectors.toList());
+        // rs.setResult(listUser);
         List<UserFetchToDTO> listUser = res.getContent().stream()
-                .map(it -> {
-                    UserFetchToDTO dto = new UserFetchToDTO();
-                    dto.setId(it.getId());
-                    dto.setEmail(it.getEmail());
-                    dto.setName(it.getName());
-                    dto.setGender(it.getGender());
-                    dto.setAddress(it.getAddress());
-                    dto.setAge(it.getAge());
-                    dto.setUpdatedAt(it.getUpdatedAt());
-                    dto.setCreatedAt(it.getCreatedAt());
-
-                    if (it.getCompany() != null) {
-                        UserFetchToDTO.CompanyDTO dtoCompany = new UserFetchToDTO.CompanyDTO(it.getCompany().getId(),
-                                it.getCompany().getName());
-
-                        // dtoCompany.setId(it.getCompany().getId());
-                        // dtoCompany.setName(it.getCompany().getName());
-                        dto.setCompany(dtoCompany);
-                    } else {
-                        dto.setCompany(null);
-                    }
-
-                    return dto;
-                })
+                .map(it -> this.convertUserFetchToDTO(it))
                 .collect(Collectors.toList());
         rs.setResult(listUser);
-
         return rs;
     }
 

@@ -43,9 +43,9 @@ public class RoleController {
     @PutMapping("/roles")
     @ApiMessage("Update role")
     public ResponseEntity<Role> updateRole(@Valid @RequestBody Role role) throws IdInvalidException {
-        if (this.roleService.existsByName(role.getName())) {
-            throw new IdInvalidException("Tên đã tồn tại!!!");
-        }
+        // if (this.roleService.existsByName(role.getName())) {
+        // throw new IdInvalidException("Tên đã tồn tại!!!");
+        // }
         if (this.roleService.findById(role) == null) {
             throw new IdInvalidException("Id không chưa được tồn tại!!!");
         }
@@ -67,5 +67,14 @@ public class RoleController {
         }
         this.roleService.deleteRole(id);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/roles/{id}")
+    @ApiMessage("Fetch role")
+    public ResponseEntity<Role> fetchRoleById(@PathVariable("id") Long id) throws IdInvalidException {
+        if (!this.roleService.existsById(id)) {
+            throw new IdInvalidException("Id không tồn tại");
+        }
+        return ResponseEntity.ok(this.roleService.findById(id));
     }
 }

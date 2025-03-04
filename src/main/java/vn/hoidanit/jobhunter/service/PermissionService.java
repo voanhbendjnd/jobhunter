@@ -57,6 +57,10 @@ public class PermissionService {
         return this.permissionRepository.existsById(id) ? true : false;
     }
 
+    public boolean existsByName(String name) {
+        return this.permissionRepository.existsByName(name) ? true : false;
+    }
+
     public void deletePermission(Long id) {
         Optional<Permission> permissionOptional = this.permissionRepository.findById(id);
         Permission permission = permissionOptional.get();

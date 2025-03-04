@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import vn.hoidanit.jobhunter.domain.Entity.Permission;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.service.PermissionService;
@@ -50,6 +49,9 @@ public class PermissionController {
     public ResponseEntity<Permission> updatePermisson(@RequestBody Permission permission) throws IdInvalidException {
         if (this.permissionService.checkApiMethodAndModule(permission)) {
             throw new IdInvalidException("apiPath hoặc method hoặc module đã tồn tại!!!");
+        }
+        if (this.permissionService.existsByName(permission.getName())) {
+            throw new IdInvalidException("Tên đã tồn tại");
         }
         return ResponseEntity.ok(this.permissionService.updatePermission(permission));
     }

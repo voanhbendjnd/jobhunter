@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.hoidanit.jobhunter.domain.Entity.Role;
 
 @Getter
 @Setter
@@ -23,6 +24,7 @@ public class ResLoginDTO {
         private Long id;
         private String email;
         private String name;
+        private Role role;
     }
 
     @Getter
@@ -32,6 +34,18 @@ public class ResLoginDTO {
     // inner class
     public static class UserGetAccount {
         private UserLogin user;
+    }
+
+    // save information inside token (not save permission)
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    // inner class
+    public static class UserInsideToken {
+        private Long id;
+        private String email;
+        private String name;
     }
 
 }

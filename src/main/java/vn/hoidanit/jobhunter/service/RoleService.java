@@ -88,4 +88,8 @@ public class RoleService {
     public void deleteRole(Long id) {
         this.roleRepository.deleteById(id);
     }
+
+    public Role findById(Long id) {
+        return this.roleRepository.findById(id).get();
+    }
 }
