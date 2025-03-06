@@ -37,6 +37,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         Long countPermissions = this.permissionRepository.count();
         Long countRoles = this.roleRepository.count();
         Long countUsers = this.userRepository.count();
+
         if (countPermissions == 0) {
             ArrayList<Permission> arr = new ArrayList<>();
             arr.add(new Permission("Create a company", "/api/v1/companies", "POST", "COMPANIES"));

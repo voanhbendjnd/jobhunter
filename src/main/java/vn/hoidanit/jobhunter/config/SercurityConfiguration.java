@@ -44,12 +44,19 @@ public class SercurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+    // khong token van vo duoc may cai whiteList <<<
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
             CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         String[] whiteList = {
-                "/", "/api/v1/auth/login", "/api/v1/auth/refresh", "/storage/**", "/api/v1/companies/**",
-                "/api/v1/jobs/**", "/api/v1/auth/register"
+                "/",
+                "/api/v1/auth/login",
+                "/api/v1/auth/refresh",
+                "/storage/**",
+                "/api/v1/companies/**",
+                "/api/v1/jobs/**",
+                "/api/v1/auth/register",
+                "/api/v1/email/**"
         };
         http
 
@@ -62,6 +69,7 @@ public class SercurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/api/v1/companies").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/jobs").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/skills").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/v1/files/**").permitAll()
 
                                 .anyRequest().authenticated()
                 // .anyRequest().permitAll()

@@ -79,12 +79,14 @@ public class SkillService {
         // this.skillRepository.deleteById(id);
         Optional<Skill> skOptional = this.skillRepository.findById(id);
         Skill skr = skOptional.get();
+        skr.getSubscribers().forEach(sub -> sub.getSkills().remove(skr));
         skr.getJobs().forEach(job -> job.getSkills().remove(skr)); // job nào có dính skill này trong job_skill thì sẽ
                                                                    // bị xóa
 
         // for (Job x : skr.getJobs()) {
         // x.getSkills().remove(skr);
         // }
+
         this.skillRepository.delete(skr);
     }
 
