@@ -17,11 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusds.jose.proc.SecurityContext;
-
-import io.micrometer.core.instrument.Meter.Id;
 import jakarta.validation.Valid;
-import vn.hoidanit.jobhunter.config.SercurityConfiguration;
 import vn.hoidanit.jobhunter.domain.Entity.User;
 import vn.hoidanit.jobhunter.domain.request.RequestLoginDTO;
 import vn.hoidanit.jobhunter.domain.response.ResLoginDTO;
@@ -33,7 +29,6 @@ import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -181,7 +176,7 @@ public class AuthController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(null);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     @ApiMessage("Create")
     public ResponseEntity<ResUserCreateDTO> create(@RequestBody User user) throws IdInvalidException {
         if (this.userService.existsByEmail(user.getEmail())) {

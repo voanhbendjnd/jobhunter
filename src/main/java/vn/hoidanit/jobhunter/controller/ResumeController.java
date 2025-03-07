@@ -42,7 +42,6 @@ import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 public class ResumeController {
     private final ResumeService resumeService;
     private final UserService userService;
-    private final UserRepository userRepository;
     private final FilterSpecificationConverter filterSpecificationConverter;
     private final FilterBuilder filterBuilder;
 
@@ -50,7 +49,6 @@ public class ResumeController {
             FilterSpecificationConverter filterSpecificationConverter, FilterBuilder filterBuilder) {
         this.resumeService = resumeService;
         this.userService = userService;
-        this.userRepository = userRepository;
         this.filterBuilder = filterBuilder;
         this.filterSpecificationConverter = filterSpecificationConverter;
     }
@@ -95,42 +93,45 @@ public class ResumeController {
         return ResponseEntity.ok(this.resumeService.resFetchResumeDTO(id));
     }
 
-    @GetMapping("/resumes")
-    @ApiMessage("Fetch all Resume")
-    public ResponseEntity<ResultPaginationDTO> fetchAll(@Filter Specification<Resume> spec, Pageable pageable) {
-        return ResponseEntity.ok(this.resumeService.resultPaginationDTO(pageable, spec));
-    }
+    // @GetMapping("/resumes")
+    // @ApiMessage("Fetch all Resume")
+    // public ResponseEntity<ResultPaginationDTO> fetchAll(@Filter
+    // Specification<Resume> spec, Pageable pageable) {
+    // return ResponseEntity.ok(this.resumeService.resultPaginationDTO(pageable,
+    // spec));
+    // }
 
-    @PostMapping("/resumes/by-user")
-    @ApiMessage("Get list resumes by user")
-    public ResponseEntity<ResultPaginationDTO> fetchResumeByUser(
+    @GetMapping("/resumes")
+    @ApiMessage("fetch all resume")
+    public ResponseEntity<ResultPaginationDTO> getAll(
             @Filter Specification<Resume> spec,
             Pageable pageable) {
-        List<Long> arrJobIds = null; // job id
-        String email = SecurityUtil.getCurrentUserLogin().isPresent() == true ? SecurityUtil.getCurrentUserLogin().get()
+        List<Long> arrJobIds = null;
+        String email = SecurityUtil.getCurrentUserLogin().isPresent()
+                ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
-        User currentUser = this.userRepository.findByEmail(email);
-
-        // return ResponseEntity.ok(this.resumeService.fetchResumeByUser(pageable));
+        User currentUser = this.userService.fecthUserByUserName(email);
         if (currentUser != null) {
-            Company companyUser = currentUser.getCompany();
-            if (companyUser != null) {
-                List<Job> companyJobs = companyUser.getJobs();
-                if (companyJobs != null && companyJobs.size() > 0) {
-                    arrJobIds = companyJobs.stream().map(x -> x.getId())
+            Company userCompany = currentUser.getCompany();
+            if (userCompany != null) {
+                List<Job> companyJobs = userCompany.getJobs();
+                if (companyJobs != null && !companyJobs.isEmpty()) {
+                    arrJobIds = companyJobs.stream().map(Job::getId)
                             .collect(Collectors.toList());
                 }
             }
         }
-        Specification<Resume> jobInSpec = filterSpecificationConverter.convert(filterBuilder.field("job") // entity
-                // resume job
-                // field chọn cột job trong resume
+        Specification<Resume> jobInSpec = filterSpecificationConverter.convert(filterBuilder.field("job")
                 .in(filterBuilder.input(arrJobIds)).get());
+
         Specification<Resume> finalSpec = jobInSpec.and(spec);
 
-        // select * from resumes where job in(1,2,3)
         return ResponseEntity.ok().body(this.resumeService.resultPaginationDTO(pageable, finalSpec));
-
     }
 
+    @PostMapping("/resumes/by-user")
+    @ApiMessage("Get list resumes by user")
+    public ResponseEntity<ResultPaginationDTO> fetchResumeByUser(Pageable pageable) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(this.resumeService.fetchResumeByUser(pageable));
+    }
 }

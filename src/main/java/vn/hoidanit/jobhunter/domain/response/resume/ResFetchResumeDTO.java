@@ -2,7 +2,9 @@ package vn.hoidanit.jobhunter.domain.response.resume;
 
 import java.time.Instant;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vn.hoidanit.jobhunter.domain.Entity.Job;
 import vn.hoidanit.jobhunter.domain.Entity.User;
@@ -25,6 +27,8 @@ public class ResFetchResumeDTO {
 
     @Getter
     @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class UserDTO {
         private Long id;
         private String name;
@@ -32,6 +36,8 @@ public class ResFetchResumeDTO {
 
     @Getter
     @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class JobDTO {
         private Long id;
         private String name;

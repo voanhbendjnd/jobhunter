@@ -10,6 +10,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -59,12 +60,12 @@ public class EmailService {
         }
     }
 
-    public void sendEmailFromTemplateSync(String to, String subject, String templateName) {
+    @Async // chia thành 2 luồng run song song
+    public void sendEmailFromTemplateSync(String to, String subject, String templateName, String username,
+            Object value) {
         Context context = new Context();
-        List<Job> job = this.jobRepository.findAll();
-        String name = "Ben10";
-        context.setVariable("jobs", job);
-        context.setVariable("name", name);
+        context.setVariable("jobs", value);
+        context.setVariable("name", username);
         String content = this.templateEngine.process(templateName, context); // convert from html to String
         this.sendEmailSync(to, subject, content, false, true);
     }

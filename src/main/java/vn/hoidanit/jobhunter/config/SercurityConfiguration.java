@@ -66,9 +66,9 @@ public class SercurityConfiguration {
                         authz -> authz
                                 .requestMatchers(whiteList)
                                 .permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/companies").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/jobs").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/skills").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/companies/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/jobs/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/skills/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/v1/files/**").permitAll()
 
                                 .anyRequest().authenticated()

@@ -32,6 +32,7 @@ import vn.hoidanit.jobhunter.repository.JobRepository;
 import vn.hoidanit.jobhunter.repository.ResumeRepository;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
+import vn.hoidanit.jobhunter.util.convert.formatRes.FormatResultPagaination;
 
 @Service
 public class ResumeService {
@@ -132,40 +133,7 @@ public class ResumeService {
 
     public ResultPaginationDTO resultPaginationDTO(Pageable pageable, Specification<Resume> spec) {
         Page<Resume> resumes = this.resumeRepository.findAll(spec, pageable);
-        ResultPaginationDTO rp = new ResultPaginationDTO();
-        ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
-        mt.setPage(pageable.getPageNumber() + 1);
-        mt.setPageSize(pageable.getPageSize());
-        mt.setPages(resumes.getTotalPages());
-        mt.setTotal(resumes.getTotalElements());
-        rp.setMeta(mt);
-        List<ResFetchResumeDTO> dto = resumes.getContent().stream()
-                .map(it -> {
-                    ResFetchResumeDTO fetchDto = new ResFetchResumeDTO();
-                    fetchDto.setId(it.getId());
-                    fetchDto.setEmail(it.getEmail());
-                    fetchDto.setUrl(it.getUrl());
-                    fetchDto.setStatus(it.getStatus());
-                    fetchDto.setCreatedAt(it.getCreatedAt());
-                    fetchDto.setUpdatedAt(it.getUpdatedAt());
-                    fetchDto.setCreatedBy(it.getCreatedBy());
-                    fetchDto.setUpdatedBy(it.getUpdatedBy());
-                    ResFetchResumeDTO.JobDTO job = new ResFetchResumeDTO.JobDTO();
-                    job.setId(it.getJob().getId());
-                    job.setName(it.getJob().getName());
-                    ResFetchResumeDTO.UserDTO user = new ResFetchResumeDTO.UserDTO();
-                    user.setId(it.getUser().getId());
-                    user.setName(it.getUser().getName());
-                    fetchDto.setUser(user);
-                    fetchDto.setJob(job);
-                    return fetchDto;
-                })
-                .collect(Collectors.toList());
-
-        rp.setResult(dto);
-
-        return rp;
-
+        return FormatResultPagaination.fetchAll(resumes);
     }
 
     // lấy tất cả cv của người dùng đang đăng nhập
