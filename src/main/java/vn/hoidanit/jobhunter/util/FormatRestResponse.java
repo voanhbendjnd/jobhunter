@@ -34,7 +34,11 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
         RestResponse<Object> res = new RestResponse<>();
         res.setStatusCode(status);
 
-        if (body instanceof String || body instanceof Resource) { // là resource thì sẽ không trả về from response
+        if (body instanceof String || body instanceof Resource) { // là resource thì sẽ không trả về form response
+            return body;
+        }
+        String path = request.getURI().getPath();
+        if (path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui")) {
             return body;
         }
         if (status >= 400) {

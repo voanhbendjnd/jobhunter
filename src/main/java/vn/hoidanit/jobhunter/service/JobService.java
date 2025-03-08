@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.jdbc.core.ResultSetSupportingSqlParameter;
 import org.springframework.stereotype.Service;
 
 import vn.hoidanit.jobhunter.domain.Entity.Company;
@@ -42,7 +41,8 @@ public class JobService {
         Job job = this.jobRepository.findById(id).get();
         if (job.getSkills() != null) {
             List<Long> reqSkills = job.getSkills()
-                    .stream().map(x -> x.getId())
+                    .stream()
+                    .map(Skill::getId)
                     .collect(Collectors.toList());
             List<Skill> dbSkills = this.skillRepository.findByIdIn(reqSkills);
             job.setSkills(dbSkills);

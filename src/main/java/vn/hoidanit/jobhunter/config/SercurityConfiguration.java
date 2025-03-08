@@ -56,7 +56,10 @@ public class SercurityConfiguration {
                 "/api/v1/companies/**",
                 "/api/v1/jobs/**",
                 "/api/v1/auth/register",
-                "/api/v1/email/**"
+                "/api/v1/email/**",
+                "/v3/api-docs/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html"
         };
         http
 

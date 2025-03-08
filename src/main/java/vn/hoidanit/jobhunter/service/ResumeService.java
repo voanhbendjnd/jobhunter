@@ -32,7 +32,7 @@ import vn.hoidanit.jobhunter.repository.JobRepository;
 import vn.hoidanit.jobhunter.repository.ResumeRepository;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
-import vn.hoidanit.jobhunter.util.convert.formatRes.FormatResultPagaination;
+import vn.hoidanit.jobhunter.util.convert.FormatRes.FormatResultPagaination;
 
 @Service
 public class ResumeService {

@@ -1,9 +1,10 @@
-package vn.hoidanit.jobhunter.util.convert.formatRes;
+package vn.hoidanit.jobhunter.util.convert.FormatRes;
 
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import vn.hoidanit.jobhunter.domain.Entity.Job;
 import vn.hoidanit.jobhunter.domain.Entity.Resume;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO.Meta;
@@ -25,5 +26,19 @@ public class FormatResultPagaination {
                 .toList();
         res.setResult(listResume);
         return res;
+    }
+
+    public static ResultPaginationDTO fetchAllJob(Page<Job> page) {
+        ResultPaginationDTO res = new ResultPaginationDTO();
+        Meta mt = new Meta();
+
+        mt.setPageSize(page.getSize());
+        mt.setPages(page.getTotal());
+        mt.setTotal(page.setTotalElements());
+        res.setMeta(mt);
+        List<ResFetchJobDTO> listJob = page.getContent()
+            .stream()
+            .map()
+        
     }
 }

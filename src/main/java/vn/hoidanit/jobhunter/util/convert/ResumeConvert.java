@@ -4,6 +4,7 @@ import vn.hoidanit.jobhunter.domain.Entity.Resume;
 import vn.hoidanit.jobhunter.domain.response.resume.ResFetchResumeDTO;
 
 public class ResumeConvert {
+
     public static ResFetchResumeDTO convertToResFetchResume(Resume resume) {
         ResFetchResumeDTO res = new ResFetchResumeDTO();
         res.setId(resume.getId());
@@ -18,4 +19,5 @@ public class ResumeConvert {
         res.setJob(new ResFetchResumeDTO.JobDTO(resume.getJob().getId(), resume.getJob().getName()));
         return res;
     }
+
 }

@@ -3,6 +3,8 @@ package vn.hoidanit.jobhunter.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.validator.internal.util.logging.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import vn.hoidanit.jobhunter.util.constant.GenderEnum;
 
 @Service
 public class DatabaseInitializer implements CommandLineRunner {
+    // private final Logger log = LoggerFactory.getLogger(CountryServiceImpl.class);
     private final PermissionRepository permissionRepository;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
