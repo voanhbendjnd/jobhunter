@@ -180,7 +180,7 @@ public class AuthController {
     @ApiMessage("Create")
     public ResponseEntity<ResUserCreateDTO> create(@RequestBody User user) throws IdInvalidException {
         if (this.userService.existsByEmail(user.getEmail())) {
-            throw new IdInvalidException("Id đã tồn tại");
+            throw new IdInvalidException("Email đã tồn tại");
         }
         String hashPassword = this.passwordEncoder.encode(user.getPassword());
         user.setPassword(hashPassword);
